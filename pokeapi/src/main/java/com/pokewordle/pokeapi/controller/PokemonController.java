@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pokewordle.pokeapi.model.Pokemon;
 import com.pokewordle.pokeapi.repository.PokemonRepository;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class PokemonController {
@@ -49,15 +49,29 @@ public class PokemonController {
         }
     }
 
-    @GetMapping("/pokemon/{id}")
-    public ResponseEntity<Pokemon> getPokemonById(@PathVariable("id") Long id) {
-        Optional<Pokemon> pokemonData = pokemonRepository.findById(id);
+    @GetMapping("/pokemon/{number}")
+    public ResponseEntity<Pokemon> getPokemonByNumber(@PathVariable("number") Integer number) {
+        try {
+            List<Pokemon> pokemon = new ArrayList<Pokemon>();
 
-        if (pokemonData.isPresent()) {
-            return new ResponseEntity<>(pokemonData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            pokemonRepository.findByNumber(number).forEach(pokemon::add);
+
+            if (pokemon.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(pokemon.get(0), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        
+        // Optional<Pokemon> pokemonData = pokemonRepository.findByNumber(number);
+
+        // if (pokemonData.isPresent()) {
+        //     return new ResponseEntity<>(pokemonData.get(), HttpStatus.OK);
+        // } else {
+        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // }
     }
 
     @PostMapping("/pokemon")
