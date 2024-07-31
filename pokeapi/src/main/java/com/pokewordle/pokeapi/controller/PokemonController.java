@@ -86,11 +86,17 @@ public class PokemonController {
         }
     }
 
+    public void savePokemonList(List<Pokemon> pokemonList) {
+        for (Pokemon pokemon : pokemonList) {
+            pokemonRepository.save(new Pokemon(pokemon.getNumber(), pokemon.getName(), pokemon.getImage(), pokemon.getGen(), pokemon.getType1(), pokemon.getType2(), pokemon.getHeight(), pokemon.getWeight()));
+        }
+    }
+
     @PostMapping("/pokemon")
-    public ResponseEntity<Pokemon> createPokemon(@RequestBody Pokemon pokemon) {
+    public ResponseEntity<List<Pokemon>> createPokemon(@RequestBody List<Pokemon> pokemonList) {
         try {
-            Pokemon _pokemon = pokemonRepository.save(new Pokemon(pokemon.getNumber(), pokemon.getName(), pokemon.getImage(), pokemon.getGen(), pokemon.getType1(), pokemon.getType2(), pokemon.getHeight(), pokemon.getWeight()));
-            return new ResponseEntity<>(_pokemon, HttpStatus.CREATED);
+            savePokemonList(pokemonList);
+            return new ResponseEntity<>(pokemonList, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
