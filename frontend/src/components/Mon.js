@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-function Mon() {
+function Mon({ id = 1 }) {
 
   const [pokemon, setPokemon] = useState({});
-  let id = 1;
 
   useEffect(() => {
     const fetchMon = async () => {

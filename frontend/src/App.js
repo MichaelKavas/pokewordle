@@ -6,7 +6,7 @@ import Game from './components/Game';
 function App() {
   return (
     <div>
-      <Mon></Mon>
+      <Mon id={5}></Mon>
       <Game></Game>
     </div>
   );

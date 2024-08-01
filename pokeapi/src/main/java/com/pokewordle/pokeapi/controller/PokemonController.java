@@ -72,7 +72,7 @@ public class PokemonController {
         try {
             List<Pokemon> pokemon = new ArrayList<Pokemon>();
             Random rnd = new Random();
-            int number = rnd.nextInt(3) + 1;
+            int number = rnd.nextInt(9) + 1;
             
             pokemonRepository.findByNumber(number).forEach(pokemon::add);
 
@@ -86,7 +86,7 @@ public class PokemonController {
         }
     }
 
-    public void savePokemonList(List<Pokemon> pokemonList) {
+    private void savePokemonList(List<Pokemon> pokemonList) {
         for (Pokemon pokemon : pokemonList) {
             pokemonRepository.save(new Pokemon(pokemon.getNumber(), pokemon.getName(), pokemon.getImage(), pokemon.getGen(), pokemon.getType1(), pokemon.getType2(), pokemon.getHeight(), pokemon.getWeight()));
         }
