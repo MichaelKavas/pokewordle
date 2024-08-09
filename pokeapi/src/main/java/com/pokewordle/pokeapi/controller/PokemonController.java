@@ -50,6 +50,24 @@ public class PokemonController {
         }
     }
 
+    @GetMapping("/pokemon/{name}")
+    public ResponseEntity<Pokemon> getPokemonByName(@PathVariable("name") String name) {
+        try {
+            List<Pokemon> pokemon = new ArrayList<Pokemon>();
+
+            pokemonRepository.findByName(name).forEach(pokemon::add);
+
+            if (pokemon.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(pokemon.get(0), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+
     @GetMapping("/pokemon/{number}")
     public ResponseEntity<Pokemon> getPokemonByNumber(@PathVariable("number") Integer number) {
         try {
